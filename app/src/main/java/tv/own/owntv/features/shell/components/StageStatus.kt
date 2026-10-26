@@ -74,6 +74,9 @@ fun StageStatusCluster(
     modifier: Modifier = Modifier,
     playlistDownFocusRequester: FocusRequester? = null,
     onPlaylistPillBounds: (Rect) -> Unit = {},
+    /** Quick "sync every playlist"; null hides the pill. [syncBusy] = a sync is running. */
+    onSyncAll: (() -> Unit)? = null,
+    syncBusy: Boolean = false,
 ) {
     Row(
         modifier.padding(end = 64.mpx, top = 34.mpx),
@@ -107,6 +110,15 @@ fun StageStatusCluster(
                         if (playlistDownFocusRequester != null) down = playlistDownFocusRequester
                     },
             )
+            if (onSyncAll != null) {
+                StagePill(
+                    text = stringResource(if (syncBusy) R.string.shell_syncing else R.string.shell_sync_all),
+                    icon = OwnTVIcon.REFRESH,
+                    onClick = onSyncAll,
+                    enabled = !syncBusy,
+                    modifier = Modifier.focusProperties { canFocus = pillsFocusable },
+                )
+            }
         }
         StageClock(weatherInfo, weatherFahrenheit, clockColors)
     }

@@ -1341,6 +1341,13 @@ fun OwnTVShell(
                 }
             }
           }
+            val syncTracker = koinInject<tv.own.owntv.core.sync.SyncActivityTracker>()
+            val syncActiveNow by syncTracker.active.collectAsStateWithLifecycle()
+            val syncScheduler = koinInject<tv.own.owntv.core.sync.work.CatalogSyncScheduler>()
+            val syncFinalizer = koinInject<tv.own.owntv.core.sync.ImportFinalizer>()
+            val syncScope = rememberCoroutineScope()
+            var syncAllRunning by remember { mutableStateOf(false) }
+            val syncBusy = syncActiveNow.isNotEmpty() || syncAllRunning
             tv.own.owntv.features.shell.components.StageStatusCluster(
                 continuePill = continueTarget?.let { target ->
                     val live = target.kind == tv.own.owntv.features.home.ContinueKind.LIVE
@@ -1363,6 +1370,26 @@ fun OwnTVShell(
                 playlistLabel = playlistLabel,
                 playlistInteractive = playlists.size > 1,
                 onPlaylistClick = { showPlaylistPicker = true },
+                syncBusy = syncBusy,
+                onSyncAll = if (playlists.isEmpty()) null else ({
+                    if (!syncBusy) {
+                        val all = playlists.toList()
+                        syncAllRunning = true
+                        syncScope.launch {
+                            try { for (src in all) {
+                                val c = syncFinalizer.contentCounts(src.id)
+                                syncScheduler.enqueueSync(
+                                    src.id, reason = "manual_all",
+                                    contentTypes = tv.own.owntv.core.sync.SyncContentTypes.enabledOf(src),
+                                    baseItemCount = c.channels + c.movies + c.series,
+                                )
+                                // one playlist at a time: wait for it to start, then to finish
+                                kotlinx.coroutines.withTimeoutOrNull(20_000) { syncTracker.active.first { src.id in it } }
+                                syncTracker.active.first { src.id !in it }
+                            } } finally { syncAllRunning = false }
+                        }
+                    }
+                }),
                 // Out of reach from deep in a list: from the rail or on Home only.
                 pillsFocusable = focusedLayer == ShellLayer.SIDEBAR || clusterFocused || selectedSection == MainSection.HOME,
                 weatherInfo = weatherInfo,

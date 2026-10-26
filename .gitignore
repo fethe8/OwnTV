@@ -57,3 +57,10 @@ replay_pid*.log
 
 # Local-only archive (old detailed changelogs etc.), never committed
 /archive/
+
+# Personal playlists and scratch files
+*.m3u
+*.m3u8
+*.apk
+quality_scan_state.json
+channel-quality-import.json

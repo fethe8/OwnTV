@@ -7,6 +7,18 @@
 > Issue numbers that are part of a title are fine; explanatory parentheticals are not. The detail —
 > what, why, files and verification — belongs in the commit message, never here.
 
+## Fire TV 6 build
+
+### ✨ New features
+- **🔄 Sync all: one button in the top bar syncs every playlist, one after another**
+- **🙈 Hidden categories are skipped when syncing and when loading the guide**
+- **📊 Channel quality is remembered from what you watch, and can be scanned on demand, gently**
+
+### 🐛 Fixes
+- **A black screen is no longer reported as good quality**
+- **A provider that answers a sync with an empty list no longer wipes or skips a playlist; the app waits and asks again**
+- **Movies, series and live channels sync one at a time on single-connection accounts**
+
 ## v5.2.1 — 2026-10-21
 
 ### ✨ New features

@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Fire OS 6 (API 25) port: the prebuilt engine libraries declare minSdk 26. -->
+    <uses-sdk tools:overrideLibrary="tv.own.owntv.playercore,tv.own.owntv.core,tv.own.owntv.libmpv,dev.jdtech.mpv" />
+
     <!-- INTERNET, ACCESS_NETWORK_STATE, FOREGROUND_SERVICE, FOREGROUND_SERVICE_DATA_SYNC and
          POST_NOTIFICATIONS are declared by :core, together with WorkManager's foreground-service
          host: core is what does the networking and runs the sync/download worker. They merge in

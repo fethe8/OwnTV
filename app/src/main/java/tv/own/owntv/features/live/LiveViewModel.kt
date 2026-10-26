@@ -1545,6 +1545,8 @@ class LiveViewModel(
         // ladder and starts the engine — the same code the phone runs.
         live.start(channel, getSource(channel.sourceId))
         recordLiveHistory(channel)
+        // Remember what this channel really delivers, read from the player that is playing it (no extra connection).
+        tv.own.owntv.features.quality.LiveQualityWatcher.watch(viewModelScope, player, previewEngine, channel.id)
     }
 
     /** HUD "compatibility mode" toggle: flip the current channel's engine and pin the choice. */

@@ -45,7 +45,7 @@ android {
 
     defaultConfig {
         applicationId = "tv.own.owntv"
-        minSdk = 26
+        minSdk = 25 // Fire OS 6 (Android 7.1): lowered from 26 for the Fire TV port
         targetSdk = 36
         // CI injects these from the git tag (see .github/workflows/android.yml) so releases never
         // need a manual edit here. The fallbacks are only used for local/debug builds — pinned HIGH
@@ -170,8 +170,10 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
-            if (releaseKeystore != null) {
-                signingConfig = signingConfigs.getByName("release")
+            signingConfig = if (releaseKeystore != null) {
+                signingConfigs.getByName("release")
+            } else {
+                signingConfigs.getByName("debug") // sideload-only build: debug key is fine
             }
         }
     }
@@ -229,6 +231,8 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+        // java.time etc. do not exist before API 26; D8 rewrites them (app and libraries) for API 25.
+        isCoreLibraryDesugaringEnabled = true
     }
 }
 
@@ -342,6 +346,7 @@ val verifyI18nLiterals = tasks.register<VerifyI18nLiterals>("verifyI18nLiterals"
 tasks.named("preBuild") { dependsOn(verifyI18nLiterals) }
 
 dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.5")
     // The shared data/settings/sync module. It lives in its own repository now — see
     // https://github.com/ahXN00/OwnTV_Core. Set owntv.corePath in ~/.gradle/gradle.properties to
     // build against its source instead of this pinned version.
