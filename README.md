@@ -7,7 +7,7 @@
 
 > **Unofficial Fire TV (Fire OS 6) build.** This is a fork of [ahXN00/OwnTV](https://github.com/ahXN00/OwnTV), not the official app.
 > It adds Fire OS 6 (Android 7.1) support, a "Sync all" button, syncing that skips hidden categories, and quality tags learned from the channels you watch.
-> The prebuilt APK on the [releases page](https://github.com/fethe8/OwnTV/releases) is signed with a debug key, so it cannot update over an official OwnTV install; uninstall the official one first.
+> The prebuilt APK on the [releases page](https://github.com/fethe8/OwnTV/releases) is signed with this fork's own key, so it cannot update over an official OwnTV install (uninstall the official one first); later releases of this fork will update over it.
 > The matching library changes are in [fethe8/OwnTV_Core](https://github.com/fethe8/OwnTV_Core). Licensed GPLv3, like the original.
 
 <p align="center">
@@ -294,7 +294,7 @@ This fork is tested on **one device**: a Toshiba 55LF711C20 Fire TV (Fire OS 6, 
 - **"Sync all" runs one playlist at a time**, and on one-connection accounts one content type at a time. This is slower than running them together, but providers that allow a single connection refuse parallel requests with an empty answer. The app now waits and retries an empty answer, and never prunes on one.
 
 **Known limits**
-- **Not signed with a release key.** The APK uses a debug key, so it cannot update over an official OwnTV install (uninstall the official one first). The in-app updater is the original project's and does not know about this fork's releases; do not use it to install the official build over this one.
+- **Signed with the fork's own key, not the original project's.** It cannot update over an official OwnTV install (uninstall the official one first); future releases of this fork install over it. The in-app updater is the original project's and does not know about this fork's releases; do not use it to install the official build over this one.
 - **mpv on Fire OS 6 is untested.** The prebuilt mpv and core libraries target Android 8; this build overrides that for Android 7.1. ExoPlayer is the engine that has been used and tested here.
 - **New texts are English only** ("Sync all", "Syncing…"). Translations for other languages come from the original project's translators, not from this fork.
 - **Home row.** Apps you install yourself do not appear on the Fire TV home row by themselves. In *Your Apps & Games*, highlight OwnTV, press the menu button and choose *Move to front*.
