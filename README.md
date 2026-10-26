@@ -283,6 +283,25 @@ Which of the two starts a stream is yours to set, separately for Live TV and for
 [ZXing](https://github.com/zxing/zxing) — and the wider Kotlin / AndroidX open-source ecosystem.
 Thank you to all their maintainers. See each project for its own license.
 
+## 🔥 Limitations of the Fire TV (Fire OS 6) build
+
+This fork is tested on **one device**: a Toshiba 55LF711C20 Fire TV (Fire OS 6, Android 7.1, about 1.5 GB of RAM). Other TVs and boxes are untested.
+
+**What changes compared with the official app**
+- **Quality tags are watch-only.** A channel gets its tag (OFF, SD, HD, FHD, 4K) only after you have watched it, read from the player that is already playing it. Tags are kept in memory and are gone when the app closes. There is no background scan, no quality filter and no sort by quality; a scan on a 1.5 GB TV caused crashes.
+- **A black screen is judged by waiting.** A channel that plays for about 10 seconds with no picture is tagged OFF. A very slow start is not a verdict, but a slow stream can still be tagged wrongly.
+- **Hidden categories are not synced.** Hidden channels, movies and series are skipped on every sync and in the guide, so the app loads less. If you unhide a category, run **Sync all** (or sync that playlist) to fetch it. Guide data already stored for channels you later hide is not removed.
+- **"Sync all" runs one playlist at a time**, and on one-connection accounts one content type at a time. This is slower than running them together, but providers that allow a single connection refuse parallel requests with an empty answer. The app now waits and retries an empty answer, and never prunes on one.
+
+**Known limits**
+- **Not signed with a release key.** The APK uses a debug key, so it cannot update over an official OwnTV install (uninstall the official one first). The in-app updater is the original project's and does not know about this fork's releases; do not use it to install the official build over this one.
+- **mpv on Fire OS 6 is untested.** The prebuilt mpv and core libraries target Android 8; this build overrides that for Android 7.1. ExoPlayer is the engine that has been used and tested here.
+- **New texts are English only** ("Sync all", "Syncing…"). Translations for other languages come from the original project's translators, not from this fork.
+- **Home row.** Apps you install yourself do not appear on the Fire TV home row by themselves. In *Your Apps & Games*, highlight OwnTV, press the menu button and choose *Move to front*.
+- **No playlists are included.** You add your own sources. Providers that limit you to one connection allow only one stream at a time, and a running sync counts as that connection.
+- **Building from source:** the sync changes live in the matching Core fork, [fethe8/OwnTV_Core](https://github.com/fethe8/OwnTV_Core). Building the app alone pulls the original Core library and leaves out those changes. Point `owntv.corePath` (in `~/.gradle/gradle.properties`) at a checkout of the Core fork.
+- **No automated tests were added** for these changes; they were checked by hand on the TV.
+
 ## ⚖️ Legal
 
 OwnTV is a media **player** only. It ships with no channels, playlists, subscriptions, or content, and
