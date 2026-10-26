@@ -5,6 +5,11 @@
   </picture>
 </p>
 
+> **Unofficial Fire TV (Fire OS 6) build.** This is a fork of [ahXN00/OwnTV](https://github.com/ahXN00/OwnTV), not the official app.
+> It adds Fire OS 6 (Android 7.1) support, a "Sync all" button, syncing that skips hidden categories, and quality tags learned from the channels you watch.
+> The prebuilt APK on the [releases page](https://github.com/fethe8/OwnTV/releases) is signed with a debug key, so it cannot update over an official OwnTV install; uninstall the official one first.
+> The matching library changes are in [fethe8/OwnTV_Core](https://github.com/fethe8/OwnTV_Core). Licensed GPLv3, like the original.
+
 <p align="center">
   <b>Your own IPTV player for Android TV</b><br>
   <sub>Fast · modern · remote-first — bring your own M3U, Xtream or Stalker (MAC) sources</sub>
